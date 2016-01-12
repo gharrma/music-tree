@@ -14,7 +14,7 @@
   .page-header {
     margin-top: 20px;
     padding-top: 0px;
-    margin-bottom: 25px;
+    margin-bottom: 10px;
   }
   #header-text {
     font-family: "Poiret One", cursive;
@@ -28,14 +28,30 @@
   #info-text {
     font-size: 20px;
   }
-  #grid {;
-    max-width: 900px;
-  }
-  .row {
-    margin-bottom: 25px;
+  .col-xs-6, .col-xs-4, .col-xs-3, .col-xs-2, .col-xs-1 {
+    padding: 10px;
   }
   .artist-button {
     white-space: normal;
+    font-size: 14px;
+  }
+  @media (max-width: 1199px) {
+    .artist-button {
+      font-size: 13px;
+    }
+  }
+  @media (max-width: 991px) {
+    .artist-button {
+      font-size: 12px;
+    }
+  }
+  @media (max-width: 767px) {
+    .artist-button {
+      font-size: 10px;
+    }
+    .col-xs-6, .col-xs-4, .col-xs-3, .col-xs-2, .col-xs-1 {
+      padding: 5px;
+    }
   }
   .btn:focus {
     outline: none;
@@ -59,7 +75,7 @@
       </span>
     </form>
   </div>
-  <div id="grid" class="container">
+  <div class="container">
     <div class="row" ng-repeat="row in grid track by $index">
       <div class="col-xs-{{colWidth}}" ng-repeat="artist in row track by $index">
         <div class="btn-group-vertical" role="group">
