@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="MusicTree">
+<head>
+  <title>Music Tree</title>
+  <meta charset="utf-8">
+  <meta name="description" content="An interactive way to discover new music by branching out from your favorite artists.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+  <script src="music-tree.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Poiret+One">
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <style>
+  .page-header {
+    margin-top: 20px;
+    padding-top: 0px;
+    margin-bottom: 25px;
+  }
+  #header-text {
+    font-family: "Poiret One", cursive;
+    font-size: 60px;
+    margin-bottom: 15px;
+  }
+  #artist-search {
+    max-width: 500px;
+    margin-bottom: 8px;
+  }
+  #info-text {
+    font-size: 20px;
+  }
+  #grid {;
+    max-width: 900px;
+  }
+  .row {
+    margin-bottom: 25px;
+  }
+  .artist-button {
+    white-space: normal;
+  }
+  .btn:focus {
+    outline: none;
+  }
+  .footer {
+    margin-top: 5px;
+    color: #777;
+  }
+  </style>
+</head>
+<body ng-controller="MusicTreeController as musicTree">
+  <div class="page-header well well-sm text-center">
+    <h1 id="header-text" class="text-primary">Music Tree</h1>
+    <form id="artist-search" class="container input-group">
+      <input type="text" ng-model="seed" placeholder="Choose an artist"
+             onfocus="this.placeholder=''" onblur="this.placeholder='Choose an artist'"
+             class="form-control text-center">
+      <span class="input-group-btn">
+        <button type="submit" class="btn btn-primary"
+                ng-click="seedTree()">Seed</button>
+      </span>
+    </form>
+  </div>
+  <div id="grid" class="container">
+    <div class="row" ng-repeat="row in grid track by $index">
+      <div class="col-xs-{{colWidth}}" ng-repeat="artist in row track by $index">
+        <div class="btn-group-vertical" role="group">
+          <button class="btn btn-block btn-{{artist.selected?'primary':'default'}}"
+                  ng-click="playPreview(artist.preview)"
+                  alt="Preview {{artist.name}}" title="Preview {{artist.name}}">
+            <img class="img-rounded" width="100%" ng-src="{{artist.image}}">
+          </button>
+          <button class="btn btn-block btn-{{artist.selected?'primary':'info'}} artist-button"
+                  alt="Select {{artist.name}}"
+                  title="Select {{artist.name}}"
+                  ng-click="selectArtist($parent.$index,$index)">
+            {{artist.name}}
+            <i class="fa fa-volume-up" ng-show="playing(artist.preview)"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <p id="info-text" class="text-center text-{{infoTextType}}">
+      {{infoText}}</p>
+  </div>
+  <footer class="footer text-center">
+    <p>&copy; <a href="http://www.mattgharrity.com">
+      Matthew Gharrity</a>, 2016 &nbsp;|&nbsp;
+    <a href="https://github.com/gharrma/music-tree">
+      <img src="github-mark.png" alt="github-mark" width="20px"></a> &nbsp;|&nbsp;
+    <a href="http://the.echonest.com/">
+      <img src="echo-nest-logo.png" alt="Powered by Echo Nest"></a> &nbsp;|&nbsp;
+    Song previews provided by iTunes</p>
+  </footer>
+</body>
+</html>
