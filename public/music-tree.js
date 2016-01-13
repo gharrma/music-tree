@@ -19,7 +19,7 @@ const sampleSeeds = [
 var app = angular.module("MusicTree", []);
 app.controller("MusicTreeController", function($scope, $http) {
   $scope.seed = "";
-  $scope.infoText = "";
+  $scope.infoText = null;
   $scope.infoTextType = "info";
   $scope.colWidth = 12 / columns;
 
@@ -61,7 +61,7 @@ app.controller("MusicTreeController", function($scope, $http) {
         return;
       }
 
-      $scope.infoText = "";
+      $scope.infoText = null;
       var r = $scope.grid.length;
       $scope.grid[r] = [];
 
@@ -89,7 +89,7 @@ app.controller("MusicTreeController", function($scope, $http) {
   /* Get song previews and artwork from iTunes. */
   function getSongPreviews(r, c) {
     function success(data) {
-      $scope.infoText = "";
+      $scope.infoText = null;
       var imageURL = data.results[0].artworkUrl100
         .replace("100x100bb.jpg", artworkSuffix);
       $scope.grid[r][c].image = imageURL;
