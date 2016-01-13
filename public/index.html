@@ -25,6 +25,9 @@
     max-width: 500px;
     margin-bottom: 8px;
   }
+  body {
+    min-width: 660px;
+  }
   #info-text {
     font-size: 20px;
   }
@@ -43,11 +46,6 @@
   @media (max-width: 991px) {
     .artist-button {
       font-size: 12px;
-    }
-  }
-  @media (max-width: 767px) {
-    .artist-button {
-      font-size: 10px;
     }
     .col-xs-6, .col-xs-4, .col-xs-3, .col-xs-2, .col-xs-1 {
       padding: 5px;
@@ -75,7 +73,7 @@
       </span>
     </form>
   </div>
-  <div class="container">
+  <div id="grid" class="container">
     <div class="row" ng-repeat="row in grid track by $index">
       <div class="col-xs-{{colWidth}}" ng-repeat="artist in row track by $index">
         <div class="btn-group-vertical" role="group">
