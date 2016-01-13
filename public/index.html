@@ -3,14 +3,18 @@
 <head>
   <title>Music Tree</title>
   <meta name="description" content="An interactive way to discover new music by branching out from your favorite artists.">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Open Graph Metadata -->
   <meta property="og:title" content="Music Tree">
   <meta property="og:description" content="An interactive way to discover new music by branching out from your favorite artists.">
   <meta property="og:url" content="http://www.mattgharrity.com/music-tree/">
   <meta property="og:image" content="http://www.mattgharrity.com/music-tree/og-image.png">
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Title Font -->
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lobster">
+  <!-- Bootstrap -->
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
   <style>
   .page-header {
@@ -63,6 +67,7 @@
   </style>
 </head>
 <body ng-controller="MusicTreeController as musicTree">
+  <!-- Page Header -->
   <div class="page-header well well-sm text-center">
     <h1 id="header-text" class="text-primary">Music Tree</h1>
     <form id="artist-search" class="container input-group">
@@ -75,6 +80,7 @@
       </span>
     </form>
   </div>
+  <!-- Grid -->
   <div id="grid" class="container">
     <div class="row" ng-repeat="row in grid track by $index">
       <div class="col-xs-{{colWidth}}" ng-repeat="artist in row track by $index">
@@ -97,6 +103,7 @@
     <p id="info-text" class="text-center text-{{infoTextType}}">
       {{infoText}}</p>
   </div>
+  <!-- Footer -->
   <footer class="footer text-center">
     <p>&copy; <a href="http://www.mattgharrity.com">
       Matthew Gharrity</a>, 2016 &nbsp;|&nbsp;
@@ -106,8 +113,9 @@
       <img src="echo-nest-logo.png" alt="Powered by Echo Nest"></a> &nbsp;|&nbsp;
     Song previews provided by iTunes</p>
   </footer>
-  <!-- JavaScript -->
+  <!-- AngularJS -->
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+  <!-- JavaScript -->
   <script src="music-tree.js"></script>
 </body>
 </html>
