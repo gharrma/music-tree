@@ -1,9 +1,10 @@
 const columns = 4;
-// Echo Nest API keys are rate limited. So don't use mine; get your own
+const maxArtists = 36;
+// Echo Nest API keys are rate limited, so don't use mine; get your own
 // for free at http://developer.echonest.com/docs
 const echoNestBase =
 "http://developer.echonest.com/api/v4/artist/similar?api_key=NRYQRCDBN0YCG4AO7"
-+ "&results=" + columns + "&min_results=" + columns + "&name=";
++ "&results=" + maxArtists + "&min_results=" + columns + "&name=";
 const iTunesBase =
 "http://itunes.apple.com/search?media=music&limit=1\
 &attribute=artistTerm&entity=song&callback=JSON_CALLBACK&term="
@@ -50,12 +51,16 @@ app.controller("MusicTreeController", function($scope, $http) {
   }
 
   /* Add new row to grid using Echo Nest API. */
+  var seenArtists = [];
   function addRow(artist) {
     $scope.infoText = "Loading...";
     $scope.infoTextType = "info";
 
     function success(data) {
-      if (data.response.status.code != 0) {
+      var status = data.response.status.code;
+      var candidates = data.response.artists;
+
+      if (status != 0) {
         $scope.infoText = "Artist not found";
         $scope.infoTextType = "danger";
         return;
@@ -65,9 +70,17 @@ app.controller("MusicTreeController", function($scope, $http) {
       var r = $scope.grid.length;
       $scope.grid[r] = [];
 
+      // filter out artists already seen
+      var i = 0;
+      while (candidates.length >= columns && i < candidates.length) {
+        if (seenArtists[candidates[i].name])
+          candidates.splice(i, 1);
+        else i++;
+      }
+
       for (var c = 0; c < columns; c++) {
         $scope.grid[r][c] = {
-          name: data.response.artists[c].name,
+          name: candidates[c].name,
           image: "placeholder-artwork.png",
           preview: null,
           previewTitle: "unavailable",
@@ -76,7 +89,10 @@ app.controller("MusicTreeController", function($scope, $http) {
         }
 
         getSongPreviews(r, c);
+        seenArtists[candidates[c].name] = true;
       }
+
+      window.scrollTo(0, document.body.scrollHeight);
     }
 
     function error(data) {
@@ -91,6 +107,9 @@ app.controller("MusicTreeController", function($scope, $http) {
   /* Get song previews and artwork from iTunes. */
   function getSongPreviews(r, c) {
     function success(data) {
+      if (data.resultCount == 0)
+        return;
+
       $scope.infoText = null;
       var imageURL = data.results[0].artworkUrl100
         .replace("100x100bb.jpg", artworkSuffix);
@@ -116,10 +135,13 @@ app.controller("MusicTreeController", function($scope, $http) {
 
   /* Play or pause a song preview. */
   $scope.playPreview = function(previewURL) {
-    if ($scope.playing(previewURL)) {
+    if (previewURL == null) {
+      $scope.infoText = "No audio preview available for that artist";
+      $scope.infoTextType = "danger";
+    } else if ($scope.playing(previewURL)) {
+      $scope.infoText = null;
       audio.pause();
     } else {
-      audio.pause();
       audio.src = previewURL;
       audio.play();
     }
