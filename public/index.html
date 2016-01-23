@@ -32,23 +32,43 @@
     max-width: 500px;
     margin-bottom: 8px;
   }
+  .instructions {
+    color: #777;
+  }
   body {
     min-width: 660px;
+  }
+  #grid {
+    max-width: 970px;
+  }
+  .square {
+    height: 0;
+    width: 100%;
+    padding-bottom: 100%;
+  }
+  .artwork-button {
+    border-style: none;
+  }
+  .artwork {
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    width: 100%; height: 100%;
+    border-radius: 3px 3px 0px 0px;
+  }
+  .itunes-badge {
+    position: absolute;
+    left: 48%; right: 0; top: 79%; bottom: 0;
   }
   #info-text {
     font-size: 20px;
   }
-  .col-xs-6, .col-xs-4, .col-xs-3, .col-xs-2, .col-xs-1 {
-    padding: 10px;
-  }
   .artist-button {
     white-space: normal;
     font-size: 14px;
+    border-style: none;
   }
-  @media (max-width: 1199px) {
-    .artist-button {
-      font-size: 13px;
-    }
+  .col-xs-6, .col-xs-4, .col-xs-3, .col-xs-2, .col-xs-1 {
+    padding: 10px;
   }
   @media (max-width: 991px) {
     .artist-button {
@@ -81,19 +101,27 @@
       </span>
     </form>
   </div>
+  <div class="instructions text-center" ng-show="grid[0]">
+    <p>Click on artwork for audio previews, then click on an artist name to branch out.</p>
+  </div>
   <!-- Grid -->
   <div id="grid" class="container">
     <div class="row" ng-repeat="row in grid track by $index">
       <div class="col-xs-{{colWidth}}" ng-repeat="artist in row track by $index">
-        <div class="btn-group-vertical" role="group">
-          <button class="btn btn-block btn-{{artist.selected?'primary':'default'}}"
+        <div class="btn-group-vertical btn-block" role="group">
+          <button class="artwork-button btn btn-block btn-{{artist.selected?'primary':'info'}}"
                   ng-click="playPreview(artist.preview)"
-                  alt="Preview {{artist.name}}" title="Preview {{artist.name}}">
-            <img class="img-rounded" width="100%" ng-src="{{artist.image}}">
+                  alt="Preview {{artist.name}}" title="Preview {{artist.previewTitle}}">
+            <div class="square">
+              <img class="artwork" ng-src="{{artist.image}}">
+              <div class="itunes-badge"><a ng-href="{{artist.previewLink}}">
+                <img src="itunes-badge.svg" alt="iTunes Badge">
+              </a></div>
+            </div>
           </button>
-          <button class="btn btn-block btn-{{artist.selected?'primary':'info'}} artist-button"
-                  alt="Select {{artist.name}}"
-                  title="Select {{artist.name}}"
+          <button class="artist-button btn btn-block btn-{{artist.selected?'primary':'info'}}"
+                  alt="Branch out from {{artist.name}}"
+                  title="Branch out from {{artist.name}}"
                   ng-click="selectArtist($parent.$index,$index)">
             {{artist.name}}
             <i class="fa fa-volume-up" ng-show="playing(artist.preview)"></i>
@@ -101,18 +129,17 @@
         </div>
       </div>
     </div>
-    <p id="info-text" class="text-center text-{{infoTextType}}">
-      {{infoText}}</p>
+    <p id="info-text" class="text-center text-{{infoTextType}}">{{infoText}}</p>
   </div>
   <!-- Footer -->
   <footer class="footer text-center">
-    <p>&copy; <a href="http://www.mattgharrity.com">
-      Matthew Gharrity</a>, 2016 &nbsp;|&nbsp;
-    <a href="https://github.com/gharrma/music-tree">
-      <img src="github-mark.png" alt="github-mark" width="20px"></a> &nbsp;|&nbsp;
-    <a href="http://the.echonest.com">
-      <img src="echo-nest-logo.png" alt="Powered by Echo Nest"></a> &nbsp;|&nbsp;
+    <p><a href="http://the.echonest.com">
+      <img src="echo-nest-logo.png" alt="Powered by Echo Nest"></a> &nbsp;&nbsp;
     Song previews provided by iTunes</p>
+    <p>&copy; <a href="http://www.mattgharrity.com">
+      Matthew Gharrity</a>, 2016 &nbsp;
+    <a href="https://github.com/gharrma/music-tree">
+      <img src="github-mark.png" alt="github-mark" width="20px"></a></p>
   </footer>
   <!-- AngularJS -->
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>

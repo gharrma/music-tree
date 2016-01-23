@@ -1,10 +1,10 @@
 const columns = 4;
 // Echo Nest API keys are rate limited. So don't use mine; get your own
 // for free at http://developer.echonest.com/docs
-const echoNestBase = 
+const echoNestBase =
 "http://developer.echonest.com/api/v4/artist/similar?api_key=NRYQRCDBN0YCG4AO7"
 + "&results=" + columns + "&min_results=" + columns + "&name=";
-const iTunesBase = 
+const iTunesBase =
 "http://itunes.apple.com/search?media=music&limit=1\
 &attribute=artistTerm&entity=song&callback=JSON_CALLBACK&term="
 const artworkSuffix = "300x300bb.jpg";
@@ -69,7 +69,9 @@ app.controller("MusicTreeController", function($scope, $http) {
         $scope.grid[r][c] = {
           name: data.response.artists[c].name,
           image: "placeholder-artwork.png",
-          preview: "",
+          preview: null,
+          previewTitle: "unavailable",
+          previewLink: null,
           selected: false
         }
 
@@ -94,7 +96,9 @@ app.controller("MusicTreeController", function($scope, $http) {
         .replace("100x100bb.jpg", artworkSuffix);
       $scope.grid[r][c].image = imageURL;
       $scope.grid[r][c].preview = data.results[0].previewUrl;
-    };
+      $scope.grid[r][c].previewTitle = '"' + data.results[0].trackName + '"';
+      $scope.grid[r][c].previewLink = data.results[0].trackViewUrl;
+    }
 
     function error(data) {
       $scope.infoText = "Error retrieving artwork and song previews";
