@@ -113,7 +113,9 @@
             <div class="square">
               <a ng-click="playPreview(artist.preview)"
                  alt="Preview {{artist.name}}" title="Preview {{artist.previewTitle}}">
-                <img class="artwork" ng-src="{{artist.image}}">
+                <img class="artwork" alt="Preview {{artist.name}}"
+                     title="Preview {{artist.previewTitle}}"
+                     ng-src="{{artist.image}}">
               </a>
               <a class="itunes-badge" ng-href="{{artist.previewLink}}"
                  target="_blank" ng-show="artist.previewLink">
@@ -122,7 +124,6 @@
             </div>
           </button>
           <button class="artist-button btn btn-block btn-{{artist.selected?'success':'primary'}}"
-                  alt="Branch out from {{artist.name}}"
                   title="Branch out from {{artist.name}}"
                   ng-click="selectArtist($parent.$index,$index)">
             {{artist.name}}
@@ -141,11 +142,11 @@
     <p>&copy; <a href="http://www.mattgharrity.com">
       Matthew Gharrity</a>, 2016 &nbsp;
     <a href="https://github.com/gharrma/music-tree">
-      <img src="github-mark.png" alt="github-mark" width="20px"></a></p>
+      <img src="github-mark.png" alt="github-mark" width="20"></a></p>
   </footer>
   <!-- AngularJS -->
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-  <!-- JavaScript -->
+  <!-- Controller -->
   <script src="controller.js"></script>
 </body>
 </html>

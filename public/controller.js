@@ -91,8 +91,6 @@ app.controller("MusicTreeController", function($scope, $http) {
         getSongPreviews(r, c);
         seenArtists[candidates[c].name] = true;
       }
-
-      window.scrollTo(0, document.body.scrollHeight);
     }
 
     function error(data) {
