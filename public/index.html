@@ -12,7 +12,7 @@
   <meta property="og:url" content="http://www.mattgharrity.com/music-tree/">
   <meta property="og:image" content="http://www.mattgharrity.com/music-tree/og-image.png">
   <!-- Title Font -->
-  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lobster">
+  <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Dancing+Script:700'>
   <!-- Bootstgrap -->
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <!-- Font Awesome -->
@@ -24,7 +24,7 @@
     margin-bottom: 10px;
   }
   #header-text {
-    font-family: Lobster, cursive;
+    font-family: 'Dancing Script', cursive;
     font-size: 60px;
     margin-bottom: 15px;
   }
@@ -55,9 +55,15 @@
     width: 100%; height: 100%;
     border-radius: 3px 3px 0px 0px;
   }
-  .itunes-badge {
+  .next-track {
     position: absolute;
-    left: 70%; right: 0; top: 85%; bottom: 0;
+    width: 35px; height: 35px;
+    left: 5px; bottom: 5px;
+  }
+  .spotify-mark {
+    position: absolute;
+    width: 25px; height: 25px;
+    right: 10px; bottom: 10px;
   }
   #info-text {
     font-size: 20px;
@@ -101,8 +107,8 @@
       </span>
     </form>
   </div>
-  <div class="instructions text-center" ng-show="grid[0]">
-    <p>Click on artwork for audio previews, then click on your favorite artist's name to branch out.</p>
+  <div class="instructions text-center" span ng-show="grid[0]">
+    <p>Click on artwork for audio previews, then click on your favorite artist's name to branch out. Go fast to maximize discovery!</p>
   </div>
   <!-- Grid -->
   <div id="grid" class="container">
@@ -111,15 +117,24 @@
         <div class="btn-group-vertical btn-block" role="group">
           <button class="artwork-button btn btn-block">
             <div class="square">
-              <a ng-click="playPreview(artist.preview)"
-                 alt="Preview {{artist.name}}" title="Preview {{artist.previewTitle}}">
+              <a ng-click="playPreview(artist)"
+                 alt="Preview {{artist.name}}"
+                 title="Preview &quot;{{artist.tracks[artist.previewIndex].name}}&quot;">
                 <img class="artwork" alt="Preview {{artist.name}}"
-                     title="Preview {{artist.previewTitle}}"
+                     title="Preview &quot;{{artist.tracks[artist.previewIndex].name}}&quot;"
                      ng-src="{{artist.image}}">
               </a>
-              <a class="itunes-badge" ng-href="{{artist.previewLink}}"
-                 target="_blank" ng-show="artist.previewLink">
-                <img src="itunes-badge.svg" alt="iTunes Badge">
+              <a ng-click="playNextTrack(artist)" ng-show="playing(artist)"
+                 ng-init="nextTrack='next-track-white.png'"
+                 ng-mouseover="nextTrack='next-track-green.png'"
+                 ng-mouseout="nextTrack='next-track-white.png'">
+                <img class="next-track" alt="Next Track" ng-src="{{nextTrack}}">
+              </a>
+              <a ng-href="{{artist.artistLink}}" target="_blank" ng-show="playing(artist)"
+                 ng-init="spotifyMark='spotify-mark-white.png'"
+                 ng-mouseover="spotifyMark='spotify-mark-green.png'"
+                 ng-mouseout="spotifyMark='spotify-mark-white.png'">
+                <img class="spotify-mark" alt="Spotify Mark" ng-src="{{spotifyMark}}">
               </a>
             </div>
           </button>
@@ -127,7 +142,7 @@
                   title="Branch out from {{artist.name}}"
                   ng-click="selectArtist($parent.$index,$index)">
             {{artist.name}}
-            <i class="fa fa-volume-up" ng-show="playing(artist.preview)"></i>
+            <i class="fa fa-volume-up" ng-show="playing(artist)"></i>
           </button>
         </div>
       </div>
@@ -136,9 +151,7 @@
   </div>
   <!-- Footer -->
   <footer class="footer text-center">
-    <p><a href="http://the.echonest.com">
-      <img src="echo-nest-logo.png" alt="Powered by Echo Nest"></a> &nbsp;&nbsp;
-    Song previews provided by iTunes</p>
+    <p>Song previews provided by Spotify.{{currentlyPlayingText}}</p>
     <p>&copy; <a href="http://www.mattgharrity.com">
       Matthew Gharrity</a>, 2016 &nbsp;
     <a href="https://github.com/gharrma/music-tree">
